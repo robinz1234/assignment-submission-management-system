@@ -1,96 +1,293 @@
-# Assignment and Submission Management System
+# Assignment & Submission Management System
 
-A complete role-based school or college application built for the Assistant Software Engineer recruitment project. Admins manage users and academic setup, teachers create and review assignments, and students submit answers and view marks and feedback.
+A full-stack, role-based Assignment and Submission Management System developed for the **Assistant Software Engineer Recruitment Project**.
 
-## Main features
+The application is designed for a school or college environment and provides separate workflows for **Administrators, Teachers, and Students**. Administrators manage academic structures and users, teachers create and evaluate assignments, and students view, submit, and track their academic work.
 
-### Admin
+The system implements authentication, backend role-based authorization, assignment and submission workflows, relational database design, API documentation, validation, error handling, logging, and automated unit tests.
 
-- Create, update, deactivate, search, and filter users.
-- Manage classes or courses and subjects.
-- assign teachers to a class and subject combination.
-- View all assignments and all submissions.
-- Manage application settings.
+---
+
+## 1. Main Features
+
+### Administrator
+
+Administrators can:
+
+* Create and manage Admin, Teacher, and Student accounts.
+* Activate or deactivate users.
+* Manage classes or courses.
+* Manage academic subjects.
+* Assign teachers to specific class and subject combinations.
+* View all assignments.
+* View all student submissions.
+* Manage application-level settings.
+* Search and filter system data where supported.
 
 ### Teacher
 
-- Create, edit, publish, and delete assignments.
-- Work only within class and subject scopes assigned by an admin.
-- Set title, description, deadline, maximum marks, status, and resubmission policy.
-- View student submissions.
-- Set marks, feedback, and submission status.
+Teachers can:
+
+* Create assignments.
+* Edit assignments.
+* Delete assignments where allowed.
+* Assign work to a specific class and subject.
+* Define assignment title and description.
+* Set assignment deadlines.
+* Define maximum marks.
+* Save assignments as drafts.
+* Publish assignments for students.
+* Allow or restrict submission updates.
+* View student submissions.
+* Review submitted work.
+* Provide marks.
+* Provide written feedback.
+* Change submission status.
+
+Teachers are restricted to the class and subject combinations assigned to them by an Administrator.
 
 ### Student
 
-- View published assignments for the student's class.
-- View assignment details and deadlines.
-- Submit an answer.
-- Update an answer before the deadline when resubmission is allowed.
-- View submission status, marks, and feedback.
+Students can:
 
-## Technology stack
+* View published assignments assigned to their class.
+* View assignment descriptions and deadlines.
+* Submit text-based answers.
+* Update submissions before the deadline when updates are allowed.
+* View submission status.
+* View awarded marks.
+* View teacher feedback.
 
-| Layer | Technology |
-|---|---|
-| Frontend | Next.js 15, React 19, TypeScript, Tailwind CSS, React Hook Form, Zod |
-| Backend | ASP.NET Core 8 Web API, C#, Entity Framework Core |
-| Database | PostgreSQL 16 |
-| Authentication | JWT bearer authentication and role-based authorization |
-| API documentation | Swagger and OpenAPI |
-| Testing | xUnit |
-| Local orchestration | Docker Compose |
+Students cannot access unpublished assignments or assignments belonging to other classes.
 
-## Project structure
+---
+
+## 2. Technology Stack
+
+| Layer               | Technology                       |
+| ------------------- | -------------------------------- |
+| Frontend            | Next.js 15                       |
+| UI Library          | React 19                         |
+| Language            | TypeScript                       |
+| Styling             | Tailwind CSS                     |
+| Form Handling       | React Hook Form                  |
+| Validation          | Zod                              |
+| Backend             | ASP.NET Core 8 Web API           |
+| Backend Language    | C#                               |
+| ORM                 | Entity Framework Core            |
+| Database            | PostgreSQL 16                    |
+| Authentication      | JWT Bearer Authentication        |
+| Authorization       | Role-Based Backend Authorization |
+| API Documentation   | Swagger / OpenAPI                |
+| Unit Testing        | xUnit                            |
+| Containerization    | Docker                           |
+| Local Orchestration | Docker Compose                   |
+
+---
+
+## 3. Application Workflow
+
+The core application workflow is:
 
 ```text
-.
+Administrator
+      |
+      |-- Creates Classes
+      |-- Creates Subjects
+      |-- Creates Teachers
+      |-- Creates Students
+      |
+      `-- Assigns Teacher to Class + Subject
+                         |
+                         v
+                      Teacher
+                         |
+                         |-- Creates Assignment
+                         |-- Draft or Published
+                         |
+                         v
+                      Student
+                         |
+                         |-- Views Published Assignment
+                         |-- Submits Answer
+                         |-- Updates Before Deadline if Allowed
+                         |
+                         v
+                      Teacher
+                         |
+                         |-- Reviews Submission
+                         |-- Awards Marks
+                         |-- Provides Feedback
+                         |
+                         v
+                      Student
+                         |
+                         `-- Views Status, Marks and Feedback
+```
+
+---
+
+## 4. Project Structure
+
+```text
+Assignment_Submission_Management_System/
+|
+|-- .github/
+|   `-- workflows/
+|       `-- ci.yml
+|
 |-- backend/
-|   |-- AssignmentManagement.Api/       ASP.NET Core API
-|   `-- AssignmentManagement.Tests/     xUnit tests
-|-- frontend/                            Next.js application
-|-- database/                            SQL schema and sample data
-|-- docs/                                Design, API, diagrams, and guides
-|-- docker-compose.yml                   One-command local setup
-|-- AssignmentSubmission.sln             .NET solution
-|-- .env.example                         Safe environment template
+|   |
+|   |-- AssignmentManagement.Api/
+|   |   |-- Controllers/
+|   |   |-- Data/
+|   |   |-- DTOs/
+|   |   |-- Models/
+|   |   |-- Services/
+|   |   |-- Migrations/
+|   |   |-- Program.cs
+|   |   |-- appsettings.json
+|   |   |-- AssignmentManagement.Api.csproj
+|   |   `-- Dockerfile
+|   |
+|   `-- AssignmentManagement.Tests/
+|       |-- AuthorizationAttributeTests.cs
+|       |-- PasswordHasherTests.cs
+|       |-- SubmissionWorkflowServiceTests.cs
+|       `-- AssignmentManagement.Tests.csproj
+|
+|-- frontend/
+|   |-- src/
+|   |-- public/
+|   |-- package.json
+|   |-- tailwind.config.ts
+|   |-- tsconfig.json
+|   |-- .env.local.example
+|   `-- Dockerfile
+|
+|-- database/
+|   |-- schema-and-seed.sql
+|   `-- README.md
+|
+|-- docs/
+|   |-- API_REFERENCE.md
+|   |-- OPERATING_GUIDE.md
+|   |-- SUBMISSION_CHECKLIST.md
+|   |-- ASSESSMENT_REQUIREMENTS_MATRIX.md
+|   |-- GITHUB_AND_SUBMISSION_GUIDE.md
+|   |
+|   `-- diagrams/
+|       |-- ERD.drawio
+|       |-- ERD.svg
+|       |-- ERD.mmd
+|       |-- ARCHITECTURE.drawio
+|       |-- ARCHITECTURE.svg
+|       `-- ARCHITECTURE.mmd
+|
+|-- .env.example
+|-- .gitignore
+|-- docker-compose.yml
+|-- AssignmentSubmission.sln
+|-- START_HERE.md
+|-- start-docker.ps1
+|-- reset-docker.ps1
+|-- verify-project.ps1
 `-- README.md
 ```
 
-## Demo credentials
+---
 
-| Role | Email | Password |
-|---|---|---|
-| Admin | `admin@school.test` | `Admin123!` |
-| Teacher | `teacher@school.test` | `Teacher123!` |
-| Student | `student@school.test` | `Student123!` |
-| Additional student | `student2@school.test` | `Student123!` |
+## 5. Demo Credentials
 
-## Recommended setup, Docker Desktop
+The application automatically creates demo accounts during database initialization.
 
-This is the easiest method because it starts PostgreSQL, the API, and the frontend together.
+### Administrator
+
+```text
+Email: admin@school.test
+Password: Admin123!
+```
+
+### Teacher
+
+```text
+Email: teacher@school.test
+Password: Teacher123!
+```
+
+### Student
+
+```text
+Email: student@school.test
+Password: Student123!
+```
+
+### Additional Student
+
+```text
+Email: student2@school.test
+Password: Student123!
+```
+
+These accounts are intended only for demonstration and assessment purposes.
+
+No real account credentials or production secrets are included in this repository.
+
+---
+
+## 6. Recommended Setup Using Docker
+
+Docker Compose is the recommended method because it starts the PostgreSQL database, ASP.NET Core API, and Next.js frontend together.
 
 ### Prerequisites
 
-1. Install Docker Desktop.
-2. Start Docker Desktop and wait until the Docker engine is running.
-3. Extract this project ZIP to a simple path, for example `C:\Projects\Assignment_Submission_Management_System`.
+Install:
 
-### Start the project on Windows
+* Git
+* Docker Desktop
+* WSL 2 when using the Docker Desktop WSL backend on Windows
 
-Open PowerShell inside the extracted folder and run:
+Make sure Docker Desktop is running before starting the project.
+
+---
+
+## 7. Clone and Start the Project
+
+Clone the repository:
+
+```bash
+git clone YOUR_REPOSITORY_URL
+cd assignment-submission-management-system
+```
+
+### Windows Command Prompt
+
+Create the local environment file:
+
+```cmd
+copy .env.example .env
+```
+
+Start the application:
+
+```cmd
+docker compose up --build
+```
+
+### Windows PowerShell
 
 ```powershell
 Copy-Item .env.example .env
 docker compose up --build
 ```
 
-You may also run:
+Alternatively:
 
 ```powershell
 .\start-docker.ps1
 ```
 
-### Start the project on macOS or Linux
+### macOS / Linux
 
 ```bash
 cp .env.example .env
@@ -98,106 +295,326 @@ chmod +x start-docker.sh reset-docker.sh
 ./start-docker.sh
 ```
 
-### Open the application
+The first Docker build may take several minutes while required images and dependencies are downloaded.
 
-- Frontend: `http://localhost:3000`
-- Swagger API: `http://localhost:5050/swagger`
-- API health endpoint: `http://localhost:5050/health`
-- PostgreSQL: `localhost:5432`
+---
 
-### Stop the project
+## 8. Application URLs
 
-Press `Ctrl + C`, then run:
+After the Docker services start successfully:
+
+### Frontend
+
+```text
+http://localhost:3000
+```
+
+### Swagger / OpenAPI
+
+```text
+http://localhost:5050/swagger
+```
+
+### API Health Check
+
+```text
+http://localhost:5050/health
+```
+
+### PostgreSQL
+
+```text
+Host: localhost
+Port: 5432
+Database: assignment_management
+```
+
+The ASP.NET Core API listens internally on port `8080` inside its Docker container. Docker Compose maps that internal port to port `5050` on the host computer.
+
+---
+
+## 9. Docker Services
+
+The Docker Compose configuration starts three main services:
+
+```text
+assignment-database
+assignment-api
+assignment-web
+```
+
+Their responsibilities are:
+
+| Service               | Purpose               |
+| --------------------- | --------------------- |
+| `assignment-database` | PostgreSQL database   |
+| `assignment-api`      | ASP.NET Core REST API |
+| `assignment-web`      | Next.js frontend      |
+
+Check the running services with:
+
+```bash
+docker compose ps
+```
+
+Stop the application with:
 
 ```bash
 docker compose down
 ```
 
-### Reset the database
+---
 
-This deletes the Docker database volume and recreates all sample data.
+## 10. Database Setup
+
+PostgreSQL is used because the application contains strongly related academic data such as users, classes, subjects, teacher assignments, assignments, and student submissions.
+
+When the API starts, Entity Framework Core automatically applies the required database migration.
+
+The application also inserts sample data so that an evaluator can immediately test the system without manually creating database tables or demo accounts.
+
+The repository also includes:
+
+```text
+database/schema-and-seed.sql
+```
+
+This provides an alternative database setup reference.
+
+### Important
+
+For a new database, use either:
+
+1. Entity Framework migrations and automatic C# seed data, which is the recommended method.
+
+or
+
+2. `database/schema-and-seed.sql`.
+
+Do not initialize the same empty database using both approaches.
+
+---
+
+## 11. Resetting the Database
+
+To remove the Docker database volume and recreate the original seeded data:
+
+### Windows PowerShell
 
 ```powershell
 .\reset-docker.ps1
 ```
 
-or:
+### macOS / Linux
 
 ```bash
 ./reset-docker.sh
 ```
 
-## Manual setup without Docker
+This should only be used when a complete local database reset is required.
 
-### Prerequisites
+---
 
-- .NET SDK 8
-- Node.js 20 or newer
-- PostgreSQL 16 or a compatible PostgreSQL version
+## 12. Manual Setup Without Docker
 
-### 1. Create the database
+Docker is recommended, but the frontend and backend can also be run manually.
 
-Using PostgreSQL command line:
+### Requirements
+
+Install:
+
+* .NET SDK 8
+* Node.js 20 or later
+* PostgreSQL 16 or a compatible PostgreSQL version
+
+### Database
+
+Create a PostgreSQL database:
 
 ```bash
 createdb -U postgres assignment_management
 ```
 
-The default local database password used by the sample configuration is `postgres`. Change the connection string when your PostgreSQL credentials differ.
+### Backend
 
-### 2. Start the backend
-
-Open a terminal in the repository root:
+Navigate to:
 
 ```bash
 cd backend/AssignmentManagement.Api
+```
+
+Restore dependencies:
+
+```bash
 dotnet restore
-dotnet run
 ```
 
-The API applies the migration and creates demo data automatically. Swagger is available at `http://localhost:5050/swagger` when the launch profile is used.
-
-For a custom database connection, set the environment variable before running:
-
-PowerShell:
-
-```powershell
-$env:ConnectionStrings__DefaultConnection="Host=localhost;Port=5432;Database=assignment_management;Username=postgres;Password=YOUR_PASSWORD"
-$env:Jwt__Key="YOUR_LOCAL_DEVELOPMENT_KEY_WITH_AT_LEAST_32_CHARACTERS"
-dotnet run
-```
-
-Bash:
+Run the API:
 
 ```bash
-export ConnectionStrings__DefaultConnection='Host=localhost;Port=5432;Database=assignment_management;Username=postgres;Password=YOUR_PASSWORD'
-export Jwt__Key='YOUR_LOCAL_DEVELOPMENT_KEY_WITH_AT_LEAST_32_CHARACTERS'
 dotnet run
 ```
 
-### 3. Start the frontend
+The API applies the database migration and seed data during startup.
 
-Open a second terminal:
+### Frontend
+
+Open another terminal:
 
 ```bash
 cd frontend
-cp .env.local.example .env.local
-npm install
-npm run dev
 ```
 
-On Windows PowerShell, use:
+Create the frontend environment file.
+
+Windows PowerShell:
 
 ```powershell
-cd frontend
 Copy-Item .env.local.example .env.local
+```
+
+macOS / Linux:
+
+```bash
+cp .env.local.example .env.local
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
+
+Run the development server:
+
+```bash
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open:
 
-## Run tests
+```text
+http://localhost:3000
+```
+
+---
+
+## 13. Environment Configuration
+
+The repository contains:
+
+```text
+.env.example
+```
+
+Copy this file to:
+
+```text
+.env
+```
+
+for local Docker usage.
+
+The main variables are:
+
+| Variable                   | Purpose                          |
+| -------------------------- | -------------------------------- |
+| `POSTGRES_DB`              | PostgreSQL database name         |
+| `POSTGRES_USER`            | PostgreSQL username              |
+| `POSTGRES_PASSWORD`        | Local PostgreSQL password        |
+| `JWT_KEY`                  | JWT signing key                  |
+| `NEXT_PUBLIC_API_BASE_URL` | API address used by the frontend |
+
+The `.env` file is excluded by `.gitignore` and should not be committed.
+
+The `.env.example` file is intentionally committed so evaluators can see which variables are required.
+
+---
+
+## 14. Authentication and Authorization
+
+The application uses JWT-based authentication.
+
+After successful login, the backend creates a signed token containing the authenticated user's identity and role.
+
+The API enforces authorization for:
+
+* Admin
+* Teacher
+* Student
+
+Role restrictions are implemented in the backend and are not dependent only on hiding frontend navigation items.
+
+Additional business-level checks verify teacher ownership, teaching assignments, student class membership, assignment publication status, submission deadlines, and review permissions.
+
+---
+
+## 15. Password Security
+
+Passwords are not stored as plain text.
+
+The backend hashes passwords using:
+
+```text
+PBKDF2
+SHA-256
+Random Salt
+100,000 Iterations
+```
+
+Only password hashes and required verification information are stored in the database.
+
+---
+
+## 16. Important Business Rules
+
+The application implements the following business rules:
+
+1. Draft assignments are not visible to students.
+
+2. Teachers can create assignments only for class and subject combinations assigned to them by an Administrator.
+
+3. Students can view only published assignments assigned to their class.
+
+4. Students cannot submit assignments after the deadline.
+
+5. A student can have only one current submission for an assignment.
+
+6. A submission can be updated only before the deadline and only when submission updates are enabled.
+
+7. Reviewed submissions cannot be modified by the Student.
+
+8. Teachers can review only submissions belonging to their assignments.
+
+9. Awarded marks cannot exceed the assignment's maximum marks.
+
+10. Marks cannot be negative.
+
+11. Important academic records are preserved when users are deactivated.
+
+12. An assignment with existing submissions cannot have its class or subject changed in ways that would invalidate the submission records.
+
+---
+
+## 17. Unit Testing
+
+The backend contains an xUnit test project:
+
+```text
+backend/AssignmentManagement.Tests
+```
+
+The tests cover important application behavior including:
+
+* Submission deadline validation.
+* Student class access restrictions.
+* Resubmission and update rules.
+* Maximum marks validation.
+* Teacher review workflow.
+* Role-based authorization attributes.
+* Password hashing behavior.
+
+### Run Tests with .NET SDK
 
 From the repository root:
 
@@ -205,9 +622,27 @@ From the repository root:
 dotnet test AssignmentSubmission.sln
 ```
 
-The test project covers key submission deadlines, class access, resubmission rules, maximum marks, password hashing, and role authorization attributes.
+### Run Tests Through Docker
 
-To build the frontend:
+This is useful when the .NET SDK is not installed directly on the host computer.
+
+Windows Command Prompt:
+
+```cmd
+docker run --rm -v "%cd%:/src" -w /src mcr.microsoft.com/dotnet/sdk:8.0 dotnet test AssignmentSubmission.sln
+```
+
+A successful run should complete with:
+
+```text
+Failed: 0
+```
+
+---
+
+## 18. Frontend Build
+
+To verify the frontend production build manually:
 
 ```bash
 cd frontend
@@ -215,105 +650,320 @@ npm install
 npm run build
 ```
 
-To run all verification steps on Windows:
-
-```powershell
-.\verify-project.ps1
-```
-
-On macOS or Linux:
+The frontend is also built automatically when running:
 
 ```bash
-./verify-project.sh
+docker compose up --build
 ```
 
-## Database setup options
+---
 
-Use one of these methods for a new database:
+## 19. API Documentation
 
-1. Recommended: start the API and let EF Core apply the migration and C# seed data.
-2. Alternative: run `database/schema-and-seed.sql` manually.
+Interactive Swagger documentation is available while the API is running:
 
-Do not use both methods on the same empty database.
+```text
+http://localhost:5050/swagger
+```
 
-## Authentication and authorization design
+A written endpoint reference is also available at:
 
-- Login returns a signed JWT containing user ID, email, name, and role claims.
-- Controllers enforce `Admin`, `Teacher`, or `Student` roles on the backend.
-- Teacher ownership and teaching scope are checked in business logic, not only in the UI.
-- Student class membership, assignment publication, deadline, and resubmission rules are enforced by the API.
-- Passwords are stored with PBKDF2 SHA-256, a random salt, and 100,000 iterations.
+```text
+docs/API_REFERENCE.md
+```
 
-## Important business rules
+Swagger can be used to inspect the available REST endpoints, request models, response models, and authentication requirements.
 
-- Draft assignments are visible only to the creating teacher and admins.
-- A teacher can create an assignment only for a class and subject assigned by an admin.
-- A student sees only published assignments for the student's class.
-- A student cannot submit after the deadline.
-- A student has at most one submission per assignment.
-- An existing submission can be updated only before the deadline, when resubmission is enabled, and before it is reviewed.
-- A teacher can review only submissions for the teacher's assignments.
-- Marks must be between zero and the assignment's maximum marks.
-- An assignment with submissions cannot have its class or subject changed.
+---
 
-## API documentation
+## 20. Error Handling and Logging
 
-Run the API and open Swagger at `http://localhost:5050/swagger`. A written endpoint summary is available in `docs/API_REFERENCE.md`.
+The ASP.NET Core backend includes centralized API error handling and application logging.
 
-## Editable diagrams
+Validation errors and business-rule violations return appropriate API responses rather than exposing internal application details to the frontend.
 
-- `docs/diagrams/ERD.drawio`
-- `docs/diagrams/ARCHITECTURE.drawio`
-- `docs/diagrams/ERD.mmd`
-- `docs/diagrams/ARCHITECTURE.mmd`
+ASP.NET Core logging is used for application lifecycle information, database operations, and relevant API events.
 
-Open `.drawio` files in diagrams.net. The SVG files in the same folder are quick previews.
+---
 
-## Environment configuration
+## 21. Form Validation
 
-Copy `.env.example` to `.env` for Docker Compose. No real credentials or production secrets are included.
+Frontend forms use structured validation before API requests are submitted.
 
-| Variable | Purpose |
-|---|---|
-| `POSTGRES_DB` | PostgreSQL database name |
-| `POSTGRES_USER` | PostgreSQL user |
-| `POSTGRES_PASSWORD` | PostgreSQL password |
-| `JWT_KEY` | JWT signing key, minimum 32 characters |
-| `NEXT_PUBLIC_API_BASE_URL` | Public API base URL used by Next.js |
+The application uses:
 
-## Assumptions
+```text
+React Hook Form
++
+Zod
+```
 
-- Each student belongs to one class or course at a time.
-- A teacher may be assigned to many class and subject combinations.
-- Assignment answers are text-based. File upload is outside the required scope.
-- One student can have one current submission per assignment.
-- A reviewed submission is locked against student changes.
-- Admins can view all data but do not grade submissions.
-- Dates are stored in UTC and displayed in the browser's local time.
-- Deleting a user is implemented as deactivation to preserve academic records.
+The backend also independently validates important rules so that API security and business logic do not depend on frontend validation alone.
 
-## Known limitations
+---
 
-- No password reset or email verification flow.
-- No file attachments.
-- No real-time notifications.
-- No refresh-token rotation.
-- Admin class and subject pages focus on creation and safe deletion, not inline editing.
-- The demo uses local browser storage for the access token. A production deployment should use a stronger token strategy and HTTPS.
+## 22. Data Model and Relationships
 
-## Design decisions
+The system uses a relational model.
 
-- PostgreSQL was selected because the domain contains clear relational constraints and many-to-many relationships.
-- `TeachingAssignment` resolves the many-to-many relationship among teachers, classes, and subjects.
-- `Submission` has a unique `(AssignmentId, StudentId)` constraint to enforce one submission per student.
-- Service-level workflow validation keeps deadline, ownership, resubmission, and marks rules independently testable.
-- API DTOs prevent password hashes and internal navigation properties from being exposed.
-- Docker Compose provides the easiest evaluator setup while manual instructions remain available.
+Important relationships include:
 
-## Submission checklist
+```text
+Class
+  |
+  `-- Students
 
-See `docs/SUBMISSION_CHECKLIST.md` before uploading the repository and submitting the assessment.
+Teacher
+  |
+  `-- Teaching Assignments
+          |
+          |-- Class
+          `-- Subject
 
-## License
+Teacher
+  |
+  `-- Assignments
+          |
+          |-- Class
+          |-- Subject
+          `-- Submissions
+                    |
+                    `-- Student
+```
 
-This recruitment assignment code is provided for evaluation and portfolio demonstration. See `LICENSE`.
+`TeachingAssignment` represents the relationship between a Teacher, Class, and Subject.
+
+`Submission` contains a unique relationship between an Assignment and Student so that one Student cannot create multiple independent submissions for the same Assignment.
+
+---
+
+## 23. ERD and Architecture Diagrams
+
+Editable diagrams are included in:
+
+```text
+docs/diagrams/
+```
+
+Available files include:
+
+```text
+ERD.drawio
+ERD.svg
+ERD.mmd
+
+ARCHITECTURE.drawio
+ARCHITECTURE.svg
+ARCHITECTURE.mmd
+```
+
+The `.drawio` files can be edited using diagrams.net.
+
+The SVG files provide quick previews, while the Mermaid files provide source-based diagram representations.
+
+---
+
+## 24. Assumptions
+
+The following assumptions were made where the assessment did not explicitly define behavior:
+
+* Each Student belongs to one class or course at a time.
+* A Teacher may teach multiple class and subject combinations.
+* Assignment submissions are text-based.
+* File uploads are outside the required project scope.
+* A Student has one active submission per Assignment.
+* Updating an existing submission is treated as resubmission.
+* A reviewed submission becomes locked from Student editing.
+* Administrators can view all assignments and submissions but do not grade Student work.
+* Dates are stored consistently and displayed according to the client environment.
+* User removal is implemented through deactivation where academic history should be preserved.
+
+---
+
+## 25. Known Limitations
+
+The current assessment implementation does not include:
+
+* Password reset by email.
+* Email verification.
+* File attachment submissions.
+* Real-time notifications.
+* Refresh-token rotation.
+* Production email services.
+* Production cloud deployment.
+* Advanced learning-management features outside the assessment scope.
+
+The application currently stores the authentication token in browser storage for the local assessment environment. A production system should use a hardened authentication strategy, HTTPS, secure secret management, and additional security controls.
+
+---
+
+## 26. Design Decisions
+
+### PostgreSQL
+
+PostgreSQL was selected because the system contains clearly defined relational entities and constraints.
+
+### Teaching Assignment Entity
+
+A dedicated `TeachingAssignment` model is used to define which Teacher is permitted to work with each Class and Subject combination.
+
+### Submission Constraint
+
+A unique Assignment and Student relationship prevents duplicate submission records while still allowing an existing submission to be updated when permitted.
+
+### Backend Business Logic
+
+Important academic rules are validated by the API instead of relying only on the frontend.
+
+### DTO Usage
+
+API DTOs prevent sensitive or unnecessary internal model information from being directly exposed.
+
+### Docker Compose
+
+Docker Compose provides a consistent evaluator setup for the frontend, backend, and PostgreSQL database with minimal manual configuration.
+
+---
+
+## 27. Security Notes
+
+* JWT-based authentication is implemented.
+* Role-based authorization is enforced by backend API endpoints.
+* Passwords are hashed before database storage.
+* Real production credentials are not included.
+* `.env` is excluded from version control.
+* `.env.example` documents required configuration.
+* Student access is restricted according to class membership.
+* Teacher actions are restricted according to assigned teaching scope.
+* Server-side validation protects important business rules.
+
+---
+
+## 28. Assessment Requirement Coverage
+
+| Assessment Requirement   | Implementation |
+| ------------------------ | -------------- |
+| Next.js                  | Implemented    |
+| React                    | Implemented    |
+| TypeScript               | Implemented    |
+| Responsive UI            | Implemented    |
+| Form Validation          | Implemented    |
+| API Integration          | Implemented    |
+| ASP.NET Core Web API     | Implemented    |
+| C#                       | Implemented    |
+| RESTful API              | Implemented    |
+| Backend Validation       | Implemented    |
+| Error Handling           | Implemented    |
+| Logging                  | Implemented    |
+| Swagger / OpenAPI        | Implemented    |
+| PostgreSQL               | Implemented    |
+| JWT Authentication       | Implemented    |
+| Role-Based Authorization | Implemented    |
+| Database Relationships   | Implemented    |
+| Migration Files          | Included       |
+| Seed / Sample Data       | Included       |
+| Unit Tests               | Included       |
+| Docker Configuration     | Included       |
+| Environment Example      | Included       |
+| Editable ERD             | Included       |
+| Setup Documentation      | Included       |
+| Demo Credentials         | Included       |
+
+---
+
+## 29. Quick Evaluation Guide
+
+For a quick demonstration:
+
+### Administrator
+
+Login with:
+
+```text
+admin@school.test
+Admin123!
+```
+
+Verify:
+
+* User management.
+* Classes and subjects.
+* Teacher assignments.
+* All assignments.
+* All submissions.
+* Application settings.
+
+### Teacher
+
+Login with:
+
+```text
+teacher@school.test
+Teacher123!
+```
+
+Verify:
+
+* Assignment creation.
+* Draft and Published status.
+* Assignment editing.
+* Student submission review.
+* Marks and feedback.
+
+### Student
+
+Login with:
+
+```text
+student@school.test
+Student123!
+```
+
+Verify:
+
+* Published assignments.
+* Assignment details.
+* Submission workflow.
+* Submission update rules.
+* Marks and teacher feedback.
+
+---
+
+## 30. Additional Documentation
+
+Additional project documentation is available under:
+
+```text
+docs/
+```
+
+Important files include:
+
+```text
+API_REFERENCE.md
+OPERATING_GUIDE.md
+SUBMISSION_CHECKLIST.md
+ASSESSMENT_REQUIREMENTS_MATRIX.md
+GITHUB_AND_SUBMISSION_GUIDE.md
+```
+
+---
+
+## 31. Final Submission Checklist
+
+Before submitting the repository:
+
+* Confirm the repository is accessible to the evaluator.
+* Confirm both frontend and backend source code are present.
+* Confirm `.env` is not committed.
+* Confirm `.env.example` is committed.
+* Confirm database migrations and seed data are present.
+* Confirm Admin, Teacher, and Student demo accounts work.
+* Confirm Docker setup works.
+* Confirm Swagger opens correctly.
+* Confirm unit tests complete successfully.
+* Confirm role-based access is enforced.
+* Confirm the README renders correctly on GitHub.
+
+---
+
