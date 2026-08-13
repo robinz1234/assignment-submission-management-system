@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:5050/api
+@token = PASTE_TOKEN_HERE
+
+### Health check
+GET http://localhost:5050/health
+
+### Login as Admin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@school.test",
+  "password": "Admin123!"
+}
+
+### Current user
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+### Dashboard
+GET {{baseUrl}}/dashboard
+Authorization: Bearer {{token}}
+
+### Assignments
+GET {{baseUrl}}/assignments?page=1&pageSize=20
+Authorization: Bearer {{token}}
+
+### Submissions for Admin or Teacher
+GET {{baseUrl}}/submissions?page=1&pageSize=20
+Authorization: Bearer {{token}}

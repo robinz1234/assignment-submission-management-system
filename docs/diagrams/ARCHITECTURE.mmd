@@ -1,0 +1,10 @@
+flowchart LR
+    Browser[User Browser] --> Next[Next.js 15 Frontend]
+    Next -->|HTTPS and JSON| API[ASP.NET Core 8 Web API]
+    API --> Auth[JWT Authentication and Role Authorization]
+    API --> Services[Business Rule Services]
+    API --> EF[Entity Framework Core]
+    EF --> DB[(PostgreSQL 16)]
+    API --> Swagger[Swagger and OpenAPI]
+    Tests[xUnit Tests] --> Services
+    Tests --> API

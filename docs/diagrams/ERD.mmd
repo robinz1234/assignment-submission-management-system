@@ -1,0 +1,67 @@
+erDiagram
+    CLASSES ||--o{ USERS : contains
+    USERS ||--o{ TEACHING_ASSIGNMENTS : teacher
+    CLASSES ||--o{ TEACHING_ASSIGNMENTS : scope
+    SUBJECTS ||--o{ TEACHING_ASSIGNMENTS : scope
+    USERS ||--o{ ASSIGNMENTS : creates
+    CLASSES ||--o{ ASSIGNMENTS : receives
+    SUBJECTS ||--o{ ASSIGNMENTS : categorizes
+    ASSIGNMENTS ||--o{ SUBMISSIONS : has
+    USERS ||--o{ SUBMISSIONS : submits
+
+    CLASSES {
+        uuid Id PK
+        varchar Name
+        varchar Section
+        varchar AcademicYear
+    }
+    USERS {
+        uuid Id PK
+        varchar FullName
+        varchar Email UK
+        varchar PasswordHash
+        varchar Role
+        uuid ClassId FK
+        boolean IsActive
+        timestamptz CreatedAt
+    }
+    SUBJECTS {
+        uuid Id PK
+        varchar Name
+        varchar Code UK
+    }
+    TEACHING_ASSIGNMENTS {
+        uuid Id PK
+        uuid TeacherId FK
+        uuid ClassId FK
+        uuid SubjectId FK
+        timestamptz CreatedAt
+    }
+    ASSIGNMENTS {
+        uuid Id PK
+        uuid TeacherId FK
+        uuid ClassId FK
+        uuid SubjectId FK
+        varchar Title
+        text Description
+        timestamptz Deadline
+        decimal MaxMarks
+        varchar Status
+        boolean AllowResubmission
+    }
+    SUBMISSIONS {
+        uuid Id PK
+        uuid AssignmentId FK
+        uuid StudentId FK
+        text AnswerText
+        varchar Status
+        decimal Marks
+        text Feedback
+        timestamptz SubmittedAt
+    }
+    SETTINGS {
+        int Id PK
+        varchar Key UK
+        varchar Value
+        varchar Description
+    }

@@ -1,0 +1,57 @@
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: assignment-database
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-assignment_management}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - assignment_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-assignment_management}"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  api:
+    build:
+      context: ./backend/AssignmentManagement.Api
+      dockerfile: Dockerfile
+    container_name: assignment-api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: Host=database;Port=5432;Database=${POSTGRES_DB:-assignment_management};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}
+      Jwt__Key: ${JWT_KEY:-CHANGE_ME_LOCAL_DOCKER_KEY_AT_LEAST_32_CHARACTERS}
+      Jwt__Issuer: AssignmentManagement.Api
+      Jwt__Audience: AssignmentManagement.Frontend
+      Jwt__ExpiryMinutes: 480
+      Cors__AllowedOrigins__0: http://localhost:3000
+    ports:
+      - "5050:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:5050/api}
+    container_name: assignment-web
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:5050/api}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  assignment_postgres_data:

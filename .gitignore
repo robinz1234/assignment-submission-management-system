@@ -1,0 +1,30 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+!.env.example
+!frontend/.env.local.example
+
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+.vs/
+TestResults/
+
+# Node
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/npm-debug.log*
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Database
+*.dump
+*.backup

@@ -1,0 +1,21 @@
+# Final submission checklist
+
+- [ ] Repository is accessible to the evaluator.
+- [ ] Frontend and backend source code are included.
+- [ ] PostgreSQL migration is included.
+- [ ] SQL schema and sample data are included.
+- [ ] Admin, Teacher, and Student demo accounts work.
+- [ ] README includes overview, features, stack, structure, setup, database, run, tests, assumptions, and limitations.
+- [ ] `.env.example` is included.
+- [ ] `.env`, real passwords, API keys, and production secrets are not committed.
+- [ ] Backend role authorization is enforced.
+- [ ] Teacher ownership and teaching scope checks work.
+- [ ] Student class, deadline, and resubmission rules work.
+- [ ] Marks cannot exceed maximum marks.
+- [ ] Unit tests pass.
+- [ ] Frontend production build passes.
+- [ ] Docker Compose starts all services.
+- [ ] Swagger opens at `http://localhost:5050/swagger`.
+- [ ] Frontend opens at `http://localhost:3000`.
+- [ ] GitHub Actions passes.
+- [ ] Repository link is submitted before the deadline.
